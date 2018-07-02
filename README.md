@@ -3,7 +3,7 @@ This repository contains the base code for our standard take home assignment for
 
 This take home aims to test:
 - If the intern can put together a functioning project within the allotted time.
-- If the intern has a basic familiarity with Git, JavaScript, GatsbyJS, React.js, Node.js and server interaction.
+- If the intern has a basic familiarity with Git, JavaScript, React.js, Node.js and server interaction.
 - If the intern can set up a basic Node.js server to function as a REST API for the client application they build out.
 - If the intern can utilize a framework they're perhaps unfamiliar with to meet the requirements of the spec.
 
@@ -16,11 +16,11 @@ This take home aims to test:
 4. Go through the [GatsbyJS tutorial](https://www.gatsbyjs.org/tutorial/).
 
 ## Assignment Spec and Instructions
-Your task is to create a very simple storefront for a fictitious product, printable versions of [Twitch Stickers](https://www.redbubble.com/shop/twitch+emote+stickers). .
+Your task is to create a very simple storefront for a fictitious product: printable versions of [Twitch Stickers](https://www.redbubble.com/shop/twitch+emote+stickers). .
 
 There are few pieces that this will require, but ultimately the two biggest pieces will be:
 1. The client website, which will be built with  [GatsbyJS](https://www.gatsbyjs.org/)
-2. The server, which should just be a simple [ExpressJS](https://expressjs.com/) set up. 
+2. The server, which should just be a simple [ExpressJS](https://expressjs.com/) app. 
 
 The requirements for both are detailed below.
 
@@ -31,11 +31,11 @@ The important qualities that **will** be considered are the following:
 - Understanding separation of concerns, (for example, don't have "dumb" child components making API calls that change the overall data of the application, in this contrived example where we're not using a data store, you'd want to pass that data down via `props`.)
 
 #### User Interface Specifications
-For this online storefront, we'll be creating the equivalent of a Single Page Application, but with Gatsby. Luckily, GatsbyJS makes this pretty easy and doesn't force you to set up `react-router`.  You'll be using modules like `gatsby-link`  to navigate between pages.
+For this online storefront, we'll be creating a Single Page Application with Gatsby. Luckily, GatsbyJS makes this pretty easy and doesn't force you to set up `react-router`.  You'll be using modules like `gatsby-link`  to navigate between pages.
 
 <img src="https://s3.us-east-2.amazonaws.com/klyxxpublicassets/CheckoutWindow.png"></img>
 
-Above, you can see the (very basic) outline for your interface. Your GatsbyJS site will have 3 necessary pages:
+Above, you can see the (very basic) outline for your interface. Your GatsbyJS site will have 3 necessary pages, the rest of the layout (that is to say the navbar) should be contained in the Gatsby layout file:
 - `Home`:
 	-  The main functionality is just so the user can see all the product offerings.
 	- On start up, you'll send a `GET` request to your server to display all the items.
@@ -56,7 +56,7 @@ After reading the Client Website spec, you probably have some idea of what kinds
 
 At the minimum, your ExpressJS server should have:
 - A `/checkout` route that can handle a `POST` request and works with the fake data that the client submits, it should return a summary of the order passed to it.
-- A `/inventory` route that can handle a `GET` request to return all the inventory.
+- An `/inventory` route that can handle a `GET` request to return all the inventory.
 
 The data for all the inventory can be global `JSON` objects and **do not** have to persist. 
 
