@@ -60,6 +60,9 @@ At the minimum, your ExpressJS server should have:
 
 The data for all the inventory can be global `JSON` objects and **do not** have to persist. 
 
+### Organization
+In this case, when you generate a new Gatsby site, it will be its own separate directory. For the assignment, we want to preserve that directory isolation, so place all of your ExpressJS files in the `server/` directory at the root level.
+
 ## Expectations
 When evaluating take home assignments, we take into consideration the following.
 - **We expect clean and legible code.**
