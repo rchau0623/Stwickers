@@ -11,8 +11,9 @@ This take home aims to test:
 
 ## Getting Started
 1. If necessary, create a GitHub account [here.](https://github.com/)
-3. Using your terminal, clone this repository, if necessarry follow [this guide](https://services.github.com/on-demand/github-cli/clone-repo-cli). All work should be done on your own repo.
-4. If necessary, review basic Git commands [here](https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud)
+2. Using your terminal, clone this repository, if necessarry follow [this guide](https://services.github.com/on-demand/github-cli/clone-repo-cli). All work should be done on your own repo.
+3. If necessary, review basic Git commands [here](https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud)
+4. Go through the [GatsbyJS tutorial](https://www.gatsbyjs.org/tutorial/).
 
 ## Assignment Spec and Instructions
 Your task is to create a very simple storefront for a fictitious product, printable versions of [Twitch Stickers](https://www.redbubble.com/shop/twitch+emote+stickers). .
@@ -32,14 +33,32 @@ The important qualities that **will** be considered are the following:
 #### User Interface Specifications
 For this online storefront, we'll be creating the equivalent of a Single Page Application, but with Gatsby. Luckily, GatsbyJS makes this pretty easy and doesn't force you to set up `react-router`.  You'll be using modules like `gatsby-link`  to navigate between pages.
 
-Your GatsbyJS site will have 4 mandatory pages:
-- `Home`: Where the user can see all the product offerings.
-- `Cart`: Where the user can see the items they've put into their cart.
-- `Checkout`: Where the user submits a form with (fake) payment information and hits an endpoint on your server.
 <img src="https://s3.us-east-2.amazonaws.com/klyxxpublicassets/CheckoutWindow.png"></img>
 
+Above, you can see the (very basic) outline for your interface. Your GatsbyJS site will have 3 necessary pages:
+- `Home`:
+	-  The main functionality is just so the user can see all the product offerings.
+	- On start up, you'll send a `GET` request to your server to display all the items.
+	- Each item of inventory should display a price, (optionally) an image, and have a button that adds the item to the users cart.
+
+- `Cart`: 
+	- The main functionality just displays the items the user has already put in their cart.
+	- Each cart item should have the functionality to remove itself from the users cart, or increase / decrease the quantity of itself.
+	- The cart page should display the total price at the bottom, and have a button prompting the user to checkout.
+ 
+- `Checkout`: 
+	- This page should just be a form, with the total price at the top, that mimics the behavior of an actual checkout.
+	- The form should take dummy payment information, and send a `POST` request to your server to submit the data.
+	- You should handle the response from the server on this same page, flashing a thank you notification if your server returns a `200`, or an error notification if there was some issue.
 
 ### Server
+After reading the Client Website spec, you probably have some idea of what kinds of endpoints you'll need to have.
+
+At the minimum, your ExpressJS server should have:
+- A `/checkout` route that can handle a `POST` request and works with the fake data that the client submits, it should return a summary of the order passed to it.
+- A `/inventory` route that can handle a `GET` request to return all the inventory.
+
+The data for all the inventory can be global `JSON` objects and **do not** have to persist. 
 
 ## Expectations
 When evaluating take home assignments, we take into consideration the following.
