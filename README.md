@@ -12,7 +12,7 @@ This take home aims to test:
 ## Getting Started
 1. If necessary, create a GitHub account [here.](https://github.com/)
 2. Using your terminal, clone this repository, if necessarry follow [this guide](https://services.github.com/on-demand/github-cli/clone-repo-cli). All work should be done on your own repo.
-3. If necessary, review basic Git commands [here](https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud)
+3. If necessary, review basic Git commands [here](https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud).
 4. Go through the [GatsbyJS tutorial](https://www.gatsbyjs.org/tutorial/).
 
 ## Assignment Spec and Instructions
