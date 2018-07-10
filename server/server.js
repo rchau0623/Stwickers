@@ -1,1 +1,20 @@
-// Put your server side JS here ... or don't you can add your own file if you'd like
+const express = require('express');
+const app = express();
+
+const cors = require('cors');
+app.use(cors());
+
+app.use(express.urlencoded({extended: false}));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+const inventoryRoutes = require('./api/routes/inventoryRoutes');
+app.use('/api', inventoryRoutes);
+
+const path = require('path');
+app.use(express.static(path.resolve(__dirname, 'public')));
+
+const portNum = process.env.PORT || 8080;
+app.listen(portNum);
+console.log('listening on', portNum);

@@ -1,0 +1,45 @@
+.item {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin: 0 auto 12px auto;
+}
+
+.user:last-child {
+	margin-bottom: 0;
+}
+
+.picture {
+	flex: 0 0 96px;
+	width: 96px;
+	height: 96px;
+	margin: 0;
+}
+
+.info {
+	flex: 1;
+	margin-left: 18px;
+	padding: 12px;
+}
+
+.name {
+	margin: 0 0 12px 0;
+	padding: 0;
+}
+
+.price {
+	margin: 0;
+}
+
+.cart {
+	display: flex;
+	min-width: 310px;
+}
+
+.buttons {
+	margin-left: 1rem;
+	margin-top: 1rem;
+	display: inline-flex;
+	max-height: 30px;
+	max-width: 80px;
+}
