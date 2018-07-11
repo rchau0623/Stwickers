@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+// This just contains all the forms, so that instead of creating each one, I can create them all in one fell swoop with an array containing the necessary information.
 const Form = props => (
 	<div>
 		<label style={{display: `block`, margin: `1rem`}}>
@@ -22,10 +23,12 @@ export default class CheckOut extends Component {
 		}
 	}
 
+	// Here I get their cart and it's total price from sessionStorage
 	componentDidMount () {
 		this.setState({cart: JSON.parse(sessionStorage.getItem("cart")), price: sessionStorage.getItem("total")});
 	}
 
+	// I set the current state to the information they have included in the form.
 	handleChange (type, event) {
 		if (type === 'name') {
 			this.setState({name: event.target.value})
@@ -40,6 +43,8 @@ export default class CheckOut extends Component {
 		} 
 	}
 
+	// This is the post request to the API. It sets the body of the post to have the same basic shape of the mongo Order schema. There it will be
+	// validated and prepped to be saved into the mongo database.
 	async postOrder(name, email, phone, shipping, billing, cart, price) {
 		document.querySelector(".error").innerHTML = "";
 
@@ -51,20 +56,23 @@ export default class CheckOut extends Component {
 				"content-type": "application/json"
 			}
 		}).then(function(response) {
+			// Here we get our response from the API. If the order was saved to the database, we get 200 and a thank you message.
+			// We then reset sessionStorage in preparation for the next order.
 			if (response.status === 200) {
 				document.querySelector(".sub").innerHTML = "Thank you for your order!";
 				sessionStorage.setItem("cart", JSON.stringify([]));
 				sessionStorage.setItem("total", 0);
 			} else if (response.status === 400) {
-				document.querySelector(".error").innerHTML = "Error: Missing information!";
-			} else if (response.stats === 422) {
-				document.querySelector(".error").innerHTML = "Error: Phone number must be a number!";
+				document.querySelector(".error").innerHTML = "Error: Missing information!"; // This is an error for if a form is left blank.
+			} else if (response.status === 422) {
+				document.querySelector(".error").innerHTML = "Error: Phone number must be a number!"; // This is an error that the phone number is not a simple number.
 			}
 		});
 
 		this.setState({cart: JSON.parse(sessionStorage.getItem("cart")), price: sessionStorage.getItem("total")});
 	}
 
+	// This submits their order to the API via a post request. After the post request is sent, the state is refreshed to have nothing.
 	handleSubmit (event) {
 		event.preventDefault();
 		this.postOrder(this.state.name, this.state.email, this.state.phone, this.state.shipping, this.state.billing, this.state.cart, this.state.price);
@@ -81,6 +89,7 @@ export default class CheckOut extends Component {
 
 	render () {
 
+		// Labels array to be used with the Form html at the top.
 		const labels = [{label: "Name", value: this.state.name, type: "name"},
 			{label: "Email", value: this.state.email, type: "email"},
 			{label: "Phone Number", value: this.state.phone, type: "phone"},
@@ -88,6 +97,7 @@ export default class CheckOut extends Component {
 			{label: "BillingAddress", value: this.state.billing, type: "billing"},
 		];
 
+		// If the cart doesn't exit, we create it.
 		let x = sessionStorage.getItem("cart");
 		sessionStorage.setItem("cart", (x == null) ? JSON.stringify([]) : x);
 		x =  this.state.cart;
@@ -101,6 +111,7 @@ export default class CheckOut extends Component {
 			/>
 		)); 
 
+		// If a user has no items, we do not show them the form and do not allow them to submit anything.
 		const submit = (!Array.isArray(x) || !x.length) ? "Pick up some items first!": (
 			<form onSubmit={this.handleSubmit.bind(this)}>
 				{forms}

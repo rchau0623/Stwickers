@@ -2,6 +2,7 @@ import React from "react";
 import Container from "../components/container";
 import Checkout from "../components/checkout";
 
+// Basic checkout page with a built in error section. The rest is handed out to the cart component so that there can be a class that has a state and functions.
 export default () => (
 	<Container>
 		<h1>Checkout?</h1>
