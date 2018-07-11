@@ -33,7 +33,6 @@ export default class Inventory extends Component {
 
 	calculate () {
 		const x = JSON.parse(sessionStorage.getItem("cart"));
-		console.log(x);
 		const total = x.reduce((total, item) => total + (item.quantity * item.item.price), 0).toFixed(2);
 		sessionStorage.setItem("total", total);
 		return total;

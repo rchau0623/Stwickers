@@ -22,9 +22,7 @@ router.get('/inventory', (req, res) => {
 router.post('/checkout', (req, res) => {
 	if (req.body.name === '' || req.body.email === '' || req.body.shippingAddress === '' || req.body.billingAddress === '') {
 		res.status(400).send({error: "Error: missing information"});
-	} else if (typeof req.body.phone != Number) {
-		res.status(400).send({error: "Error: phone number must be a number"});
-	} else { 
+	}  else { 
 		const body = {
 			name: req.body.name,
 			email: req.body.email,
