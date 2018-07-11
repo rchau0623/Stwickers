@@ -1,108 +1,116 @@
 import React, { Component } from "react";
 
-export default class Cart extends Component {
+const Form = props => (
+	<div>
+		<label style={{display: `block`, margin: `1rem`}}>
+			{props.label}: <input type="text" value={props.value} onChange={props.handleChange} />
+		</label>
+	</div>
+);
+
+export default class CheckOut extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			cart:[],
+			name: "",
+			email: "",
+			phone: "",
+			shipping: "",
+			billing: "",
+			cart: [],
+			price: 0,
 		}
 	}
 
-	async componentDidMount () {
-		this.setState({cart: JSON.parse(sessionStorage.getItem("cart"))})
+	componentDidMount () {
+		this.setState({cart: JSON.parse(sessionStorage.getItem("cart")), price: sessionStorage.getItem("total")});
 	}
 
-	async postOrder() {
-		await fetch("http://localhost:080/api/checkout", {
-			body: JSON.stringify(),
+	handleChange (type, event) {
+		if (type === 'name') {
+			this.setState({name: event.target.value})
+		} else if (type === 'email') {
+			this.setState({email: event.target.value})
+		} else if (type === 'phone') {
+			this.setState({phone: event.target.value})
+		} else if (type === 'shipping') {
+			this.setState({shipping: event.target.value})
+		} else if (type === 'billing') {
+			this.setState({billing: event.target.value})
+		} 
+	}
+
+	async postOrder(name, email, phone, shipping, billing, cart, price) {
+		document.querySelector(".error").innerHTML = "";
+
+		await fetch("http://localhost:8080/api/checkout", {
+			body: JSON.stringify({name, email, phone, shipping, billing, cart, price}),
 			method: "POST",
 			headers: {
 				"user-agent": "Mozilla/4.0 ",
 				"content-type": "application/json"
 			}
-		})
-	}
+		}).then(function(response) {
+			if (response.status === 200) {
+				document.querySelector(".sub").innerHTML = "Thank you for your order!";
+				sessionStorage.setItem("cart", JSON.stringify([]));
+				sessionStorage.setItem("total", 0);
+			} else if (response.status === 400) {
+				console.log(response);
+				document.querySelector(".error").innerHTML = "Error";
+				
+			}
+		});
 
-	handleChange (type, event) {
-		let cart = this.state.cart;
-		if (Number.target.value >= 0) {
-			cart.find(item => item.item === type).quantity = Number(event.target.value);
-		} else {
-			const errmsg = document.createElement("p");
-			errmsg.innerHTML = "Negative quantity?";
-			document.querySelector(".error").appendChild(errmsg);
-		}
-		this.setState({cart: cart})
+		this.setState({cart: JSON.parse(sessionStorage.getItem("cart")), price: sessionStorage.getItem("total")});
 	}
 
 	handleSubmit (event) {
 		event.preventDefault();
-		let cart = this.state.cart;
-		cart = cart.filter(item => item.quantity !== 0);
-		this.setState({cart: cart});
-		sessionStorage.setItem("cart", JSON.stringify(cart));
+		this.postOrder(this.state.name, this.state.email, this.state.phone, this.state.shipping, this.state.billing, this.state.cart, this.state.price);
+		this.setState({
+			name: "",
+			email: "",
+			phone: "",
+			shipping: "",
+			billing: "",
+			cart:[],
+			price: 0,
+		});
 	}
 
 	render () {
+
+		const labels = [{label: "Name", value: this.state.name, type: "name"},
+			{label: "Email", value: this.state.email, type: "email"},
+			{label: "Phone Number", value: this.state.phone, type: "phone"},
+			{label: "Shipping Address", value: this.state.shipping, type: "shipping"},
+			{label: "BillingAddress", value: this.state.billing, type: "billing"},
+		];
+
+		let x = sessionStorage.getItem("cart");
+		sessionStorage.setItem("cart", (x == null) ? JSON.stringify([]) : x);
+		x =  this.state.cart;
+		
+		const forms = labels.map((item, i) => (
+			<Form
+				key={i}
+				label={item.label}
+				value={item.value}
+				handleChange={this.handleChange.bind(this, item.type)}
+			/>
+		)); 
+
+		const submit = (!Array.isArray(x) || !x.length) ? "Pick up some items first!": (
+			<form onSubmit={this.handleSubmit.bind(this)}>
+				{forms}
+				<input type='submit' value='Submit' />
+			</form>
+		);
+
 		return (
-			<div class="row">
-				<div class="col-75">
-					<div class="container">
-						<form action="/action_page.php">
-
-							<div class="row">
-								<div class="col-50">
-									<h3>Billing Address</h3>
-									<label for="fname"><i class="fa fa-user"></i> Full Name</label>
-									<input type="text" id="fname" name="firstname" placeholder="John M. Doe" />
-									<label for="email"><i class="fa fa-envelope"></i> Email</label>
-									<input type="text" id="email" name="email" placeholder="john@example.com" />
-									<label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
-									<input type="text" id="adr" name="address" placeholder="542 W. 15th Street" />
-									<label for="city"><i class="fa fa-institution"></i> City</label>
-									<input type="text" id="city" name="city" placeholder="New York" />
-
-									<div class="row">
-										<div class="col-50">
-											<label for="state">State</label>
-											<input type="text" id="state" name="state" placeholder="NY" />
-										</div>
-										<div class="col-50">
-											<label for="zip">Zip</label>
-											<input type="text" id="zip" name="zip" placeholder="10001" />
-										</div>
-									</div>
-								</div>
-
-								<div class="col-50">
-									<h3>Payment</h3>
-									<label for="cname">Name on Card</label>
-									<input type="text" id="cname" name="cardname" placeholder="John More Doe" />
-									<label for="ccnum">Credit card number</label>
-									<input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" />
-									<label for="expmonth">Exp Month</label>
-									<input type="text" id="expmonth" name="expmonth" placeholder="September" />
-
-									<div class="row">
-										<div class="col-50">
-											<label for="expyear">Exp Year</label>
-											<input type="text" id="expyear" name="expyear" placeholder="2018" />
-										</div>
-										<div class="col-50">
-											<label for="cvv">CVV</label>
-											<input type="text" id="cvv" name="cvv" placeholder="352" />
-										</div>
-									</div>
-								</div>
-
-							</div>
-							<label>
-								<input type="checkbox" checked="checked" name="sameadr" /> Shipping address same as billing
-							</label>
-							<input type="submit" value="Continue to checkout" class="btn" />
-						</form>
-					</div>
-				</div>
+			<div className="sub">
+				{submit}
 			</div>
 		)
 	}

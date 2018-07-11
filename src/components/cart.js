@@ -33,7 +33,7 @@ export default class Cart extends Component {
 		}
 	}
 
-	async componentDidMount () {
+	componentDidMount () {
 		this.setState({cart: JSON.parse(sessionStorage.getItem("cart"))})
 	}
 

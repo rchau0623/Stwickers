@@ -20,22 +20,32 @@ router.get('/inventory', (req, res) => {
 });
 
 router.post('/checkout', (req, res) => {
-	if (req.body.name === '' || req.body.email === '' || req.body.phone === '' || req.body.shippingAddress === '' || req.body.billingAddress === '' || req.body.price === '') { //} || req.body.items === '') {
-		res.json({error: 'Error: missing information'});
+	if (req.body.name === '' || req.body.email === '' || req.body.shippingAddress === '' || req.body.billingAddress === '') {
+		res.status(400).send({error: "Error: missing information"});
+	} else if (typeof req.body.phone != Number) {
+		res.status(400).send({error: "Error: phone number must be a number"});
 	} else { 
 		const body = {
 			name: req.body.name,
 			email: req.body.email,
 			phone: req.body.phone,
-			shippingAddress: req.body.shippingAddress,
-			billingAddress: req.body.billingAddress,
-			price: req.body.price,
+			shippingAddress: req.body.shipping,
+			billingAddress: req.body.billing,
 			cart: req.body.cart,
+			price: req.body.price,
 		};
-		const order = new Order(body);
 
+		body.cart.forEach(function(item) {
+			item.item = item.item._id;
+		});
+
+		const order = new Order(body);
 		order.save((err, result) => {
-			res.status(200).send(result);
+			if (err) { 
+				res.status(400).send(err);
+			} else {
+				res.status(200).send(result);
+			}
 		});
 	}
 });

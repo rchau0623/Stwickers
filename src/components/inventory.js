@@ -28,7 +28,7 @@ export default class Inventory extends Component {
 
 	async componentDidMount () {
 		const items = await fetch("http://localhost:8080/api/inventory").then(res => res.json());
-		this.setState({inventory: items})
+		this.setState({inventory: items});
 	}
 
 	calculate () {
