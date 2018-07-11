@@ -94,7 +94,7 @@ export default class CheckOut extends Component {
 			{label: "Email", value: this.state.email, type: "email"},
 			{label: "Phone Number", value: this.state.phone, type: "phone"},
 			{label: "Shipping Address", value: this.state.shipping, type: "shipping"},
-			{label: "BillingAddress", value: this.state.billing, type: "billing"},
+			{label: "Billing Address", value: this.state.billing, type: "billing"},
 		];
 
 		// If the cart doesn't exit, we create it.
@@ -116,10 +116,10 @@ export default class CheckOut extends Component {
 		// If a user has no items, we do not show them the form and do not allow them to submit anything.
 		const submit = (!Array.isArray(x) || !x.length) ? "Pick up some items first!": (
 			<div>
-				{total}
-				<form onSubmit={this.handleSubmit.bind(this)}>
+				<p style={{ marginLeft: `1rem`}}><b>{total}</b></p>
+				<form onSubmit={this.handleSubmit.bind(this)} >
 					{forms}
-					<input type='submit' value='Confirm Order' />
+					<input type='submit' value='Confirm Order' style={{margin: `1rem`}}/>
 				</form>
 			</div>
 		);
