@@ -56,9 +56,9 @@ export default class CheckOut extends Component {
 				sessionStorage.setItem("cart", JSON.stringify([]));
 				sessionStorage.setItem("total", 0);
 			} else if (response.status === 400) {
-				console.log(response);
-				document.querySelector(".error").innerHTML = "Error";
-				
+				document.querySelector(".error").innerHTML = "Error: Missing information!";
+			} else if (response.stats === 422) {
+				document.querySelector(".error").innerHTML = "Error: Phone number must be a number!";
 			}
 		});
 
@@ -74,7 +74,7 @@ export default class CheckOut extends Component {
 			phone: "",
 			shipping: "",
 			billing: "",
-			cart:[],
+			cart: [],
 			price: 0,
 		});
 	}
