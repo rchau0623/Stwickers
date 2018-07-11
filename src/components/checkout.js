@@ -111,12 +111,17 @@ export default class CheckOut extends Component {
 			/>
 		)); 
 
+		const total =  "Your total is: $" + sessionStorage.getItem("total");
+
 		// If a user has no items, we do not show them the form and do not allow them to submit anything.
 		const submit = (!Array.isArray(x) || !x.length) ? "Pick up some items first!": (
-			<form onSubmit={this.handleSubmit.bind(this)}>
-				{forms}
-				<input type='submit' value='Submit' />
-			</form>
+			<div>
+				{total}
+				<form onSubmit={this.handleSubmit.bind(this)}>
+					{forms}
+					<input type='submit' value='Confirm Order' />
+				</form>
+			</div>
 		);
 
 		return (
